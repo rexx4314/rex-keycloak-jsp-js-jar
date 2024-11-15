@@ -1,6 +1,6 @@
 package main.java;
 
-import com.acorn.authz.service.TokenService;
+import com.acorn.authz.service.AuthService;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebServlet("/generate-token")
 public class TokenServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(TokenServlet.class.getName());
-    private final TokenService tokenService = new TokenService();
+    private final AuthService authService = new AuthService(); // AuthService를 통해 토큰 서비스 접근
     private final ObjectMapper objectMapper = new ObjectMapper(); // JSON 변환용 Jackson ObjectMapper
 
     @Override
@@ -30,8 +30,8 @@ public class TokenServlet extends HttpServlet {
         }
 
         try {
-            // TokenService를 통해 토큰과 사용자 정의 클레임 데이터를 가져옴
-            Map<String, Object> tokenData = tokenService.getTokenWithCustomClaims(userId, tenantId);
+            // AuthService를 통해 토큰과 사용자 정의 클레임 데이터를 가져옴
+            Map<String, Object> tokenData = authService.generateTokenWithClaims(userId, tenantId);
 
             // JSON 응답 작성
             String jsonResponse = objectMapper.writeValueAsString(tokenData);
