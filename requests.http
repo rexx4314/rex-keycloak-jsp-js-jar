@@ -2,30 +2,13 @@
 POST http://localhost:18080/generate-token
 Content-Type: application/x-www-form-urlencoded
 
-userId=testUser&tenantId=testTenant
+userId=rex-user&tenantId=testTenant
+#userId=testUser&tenantId=testTenant
 
 ### Role Authorization Check
 POST http://localhost:18080/check-authorization
 Content-Type: application/x-www-form-urlencoded
 
+systemDiv=A00001&userId=rex-user&menuId=AML_10_10_10
 systemDiv=A00001&userId=lll@daum.net&menuId=AML_10_10_10
 #systemDiv=testSystem&userId=testUser&menuId=testMenu
-
-###
-
-# curl -X POST http://localhost:18080/check-authorization
-#     -H "Content-Type: application/x-www-form-urlencoded"
-#     -d "systemDiv=testSystem&userId=testUser&menuId=testMenu"
-POST http://localhost:18080/check-authorization
-Content-Type: application/x-www-form-urlencoded
-
-systemDiv = A00001 &
-userId = lll@daum.net &
-menuId = AML_10_10_10
-
-#systemDiv = testSystem &
-#userId = testUser &
-#menuId = testMenu
-
-###
-

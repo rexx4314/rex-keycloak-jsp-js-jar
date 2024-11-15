@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,8 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebServlet("/check-authorization")
 public class RoleAuthServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(RoleAuthServlet.class.getName());
-    private final AuthService authService = new AuthService(); // AuthService를 통한 권한 확인
-    private final ObjectMapper objectMapper = new ObjectMapper(); // JSON 변환용 Jackson ObjectMapper
+    private final AuthService authService = new AuthService();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,11 +32,12 @@ public class RoleAuthServlet extends HttpServlet {
         }
 
         try {
-            // AuthService를 통해 권한 확인
             String authorizationResult = authService.checkAuthorization(systemDiv, userId, menuId);
 
-            // JSON 응답 작성
-            String jsonResponse = objectMapper.writeValueAsString(Map.of("authorized", authorizationResult));
+            Map<String, String> responseMap = new HashMap<>();
+            responseMap.put("authorized", authorizationResult);
+
+            String jsonResponse = objectMapper.writeValueAsString(responseMap);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(jsonResponse);
